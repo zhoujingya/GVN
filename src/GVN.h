@@ -3,7 +3,9 @@
 //    GVN.h
 //
 // DESCRIPTION:
-// Demo implementation for global value numbering
+//    Declares the Global Value Numbering pass for the new LLVM Pass Manager.
+//    This pass eliminates redundant computations by identifying expressions
+//    that compute identical values.
 //
 // License: MIT
 //==============================================================================
@@ -11,31 +13,19 @@
 #ifndef GVN_H
 #define GVN_H
 
+#include "llvm/IR/Function.h"
 #include "llvm/IR/PassManager.h"
 #include "llvm/Pass.h"
 
-// Forward declarations
-namespace llvm {
-
-class Function;
-
-} // namespace llvm
-
 //------------------------------------------------------------------------------
-// New PM interface
+// GVN Pass
 //------------------------------------------------------------------------------
-
-struct GVN : llvm::PassInfoMixin<GVN> {
-  // This is one of the standard run() member functions expected by
-  // PassInfoMixin. When the pass is executed by the new PM, this is the
-  // function that will be called.
-  llvm::PreservedAnalyses run(llvm::Function &Func,
-                              llvm::FunctionAnalysisManager &FAM);
-
-  // Without isRequired returning true, this pass will be skipped for functions
-  // decorated with the optnone LLVM attribute. Note that clang -O0 decorates
-  // all functions with optnone.
-  static bool isRequired() { return true; }
+// This class implements the Global Value Numbering optimization pass
+class GVN : public llvm::PassInfoMixin<GVN> {
+public:
+  // Main entry point - run GVN on a function
+  llvm::PreservedAnalyses run(llvm::Function &F,
+                             llvm::FunctionAnalysisManager &FAM);
 };
 
 #endif // GVN_H

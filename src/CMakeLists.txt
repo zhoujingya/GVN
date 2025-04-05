@@ -2,7 +2,7 @@ set(GVN_SOURCE GVN.cpp)
 
 add_library(GVN SHARED ${GVN_SOURCE})
 
-target_link_libraries(GVN LLVMCore LLVMSupport)
+target_link_libraries(GVN LLVMCore LLVMSupport LLVMAnalysis LLVMPasses)
 # On Darwin (unlike on Linux), undefined symbols in shared objects are not
 # allowed at the end of the link-edit. The plugins defined here:
 #  - _are_ shared objects
